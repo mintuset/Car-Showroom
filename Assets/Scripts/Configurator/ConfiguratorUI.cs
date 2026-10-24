@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 /// <summary>
@@ -17,15 +18,16 @@ public class ConfiguratorUI : MonoBehaviour
         public string label;
         [Tooltip("Camera eye position and look direction.")]
         public Transform point;
-        [Tooltip("Let the player walk from here (exterior views). Off for seats and elevated views.")]
-        public bool allowWalking;
+        [FormerlySerializedAs("allowWalking")]
+        [Tooltip("Shows the whole car from outside. Paint and wheel changes made from other views jump to one of these.")]
+        public bool wholeCar;
     }
 
     private enum Tab { Model, Exterior, Interior, Views }
 
     [Header("References")]
     [SerializeField] private CarConfigurator car;
-    [SerializeField] private FirstPersonController player;
+    [SerializeField] private ShowroomCamera cameraRig;
     [SerializeField] private StyleSheet styleSheet;
 
     [Header("Viewpoints")]
@@ -67,7 +69,7 @@ public class ConfiguratorUI : MonoBehaviour
 
     private GleCatalog.Variant Variant => GleCatalog.Variants[variantIndex];
     private bool InsideCar => IsInterior(currentView);
-    private bool AtFixedView => currentView != null && !currentView.allowWalking;
+    private bool AtFixedView => currentView != null && !currentView.wholeCar;
 
     private void OnEnable()
     {
@@ -75,6 +77,12 @@ public class ConfiguratorUI : MonoBehaviour
         if (styleSheet != null) root.styleSheets.Add(styleSheet);
 
         BuildShell();
+
+        if (cameraRig != null)
+        {
+            cameraRig.OrbitPivot = orbitPivot;
+            cameraRig.IsPointerBlocked = IsPointerOverUI;
+        }
     }
 
     private void Start()
@@ -145,7 +153,7 @@ public class ConfiguratorUI : MonoBehaviour
 
     private void GoTo(Viewpoint view)
     {
-        if (view == null || view.point == null || player == null) return;
+        if (view == null || view.point == null || cameraRig == null) return;
 
         Viewpoint from = currentView;
         currentView = view;
@@ -157,6 +165,7 @@ public class ConfiguratorUI : MonoBehaviour
             : GlideTo(view);
 
         if (transition != null) StopCoroutine(transition);
+        cameraRig.InputLocked = true;
         transition = StartCoroutine(move);
         Refresh();
     }
@@ -177,15 +186,21 @@ public class ConfiguratorUI : MonoBehaviour
     private void Arrive(Viewpoint view)
     {
         GetPose(view, out Vector3 eye, out float yaw, out float pitch);
-        player.Teleport(eye, yaw, pitch, view.allowWalking);
+        cameraRig.Place(eye, yaw, pitch, IsInterior(view) ? ShowroomCamera.DragMode.Pan : ShowroomCamera.DragMode.Orbit);
         car.SetCabinLight(IsInterior(view));
+    }
+
+    private void EndTransition()
+    {
+        transition = null;
+        cameraRig.InputLocked = false;
     }
 
     private IEnumerator CutTo(Viewpoint view)
     {
         Arrive(view);
         yield return FadeAlpha(0f);
-        transition = null;
+        EndTransition();
     }
 
     private IEnumerator FadeTo(Viewpoint view)
@@ -194,7 +209,7 @@ public class ConfiguratorUI : MonoBehaviour
         Arrive(view);
         yield return null; // let the new view render once before revealing it
         yield return FadeAlpha(0f);
-        transition = null;
+        EndTransition();
     }
 
     private IEnumerator GlideTo(Viewpoint view)
@@ -202,9 +217,9 @@ public class ConfiguratorUI : MonoBehaviour
         if (fadeAlpha > 0f) yield return FadeAlpha(0f);
 
         GetPose(view, out Vector3 endEye, out float endYaw, out float endPitch);
-        Vector3 startEye = player.EyePosition;
-        float startYaw = player.Yaw;
-        float startPitch = player.Pitch;
+        Vector3 startEye = cameraRig.EyePosition;
+        float startYaw = cameraRig.Yaw;
+        float startPitch = cameraRig.Pitch;
         car.SetCabinLight(false);
 
         // Interpolate in cylindrical coordinates around the car: angle, radius and height.
@@ -225,12 +240,12 @@ public class ConfiguratorUI : MonoBehaviour
                 pivot.x + Mathf.Cos(angle) * radius,
                 Mathf.Lerp(startEye.y, endEye.y, e),
                 pivot.z + Mathf.Sin(angle) * radius);
-            player.Teleport(eye, Mathf.LerpAngle(startYaw, endYaw, e), Mathf.Lerp(startPitch, endPitch, e), false);
+            cameraRig.Place(eye, Mathf.LerpAngle(startYaw, endYaw, e), Mathf.Lerp(startPitch, endPitch, e), ShowroomCamera.DragMode.Orbit);
             yield return null;
         }
 
         Arrive(view);
-        transition = null;
+        EndTransition();
     }
 
     private IEnumerator FadeAlpha(float target)
@@ -305,7 +320,7 @@ public class ConfiguratorUI : MonoBehaviour
         var hintBar = new VisualElement();
         hintBar.AddToClassList("cfg-hint-bar");
         hintBar.pickingMode = PickingMode.Ignore;
-        var hint = MakeLabel("Hold right mouse button to look around  ·  WASD to walk when outside the car", "cfg-hint");
+        var hint = MakeLabel("Drag to orbit the car  ·  Drag inside the car to look around", "cfg-hint");
         hint.pickingMode = PickingMode.Ignore;
         hintBar.Add(hint);
         root.Add(hintBar);
@@ -315,6 +330,14 @@ public class ConfiguratorUI : MonoBehaviour
         overlay.style.display = DisplayStyle.None;
         overlay.RegisterCallback<ClickEvent>(e => { if (e.target == overlay) ShowCompare(false); });
         root.Add(overlay);
+    }
+
+    private bool IsPointerOverUI(Vector2 screenPosition)
+    {
+        if (root?.panel == null) return false;
+        Vector2 panelPosition = RuntimePanelUtils.ScreenToPanel(root.panel, new Vector2(screenPosition.x, Screen.height - screenPosition.y));
+        VisualElement picked = root.panel.Pick(panelPosition);
+        return picked != null && picked != root && root.Contains(picked);
     }
 
     private void Refresh()

@@ -1134,36 +1134,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ConfiguratorUI
   car: {fileID: 1046046200}
-  player: {fileID: 1918189073}
+  cameraRig: {fileID: 1918189076}
   styleSheet: {fileID: 7433441132597879392, guid: ddef522266456a940b768ba72edbb127, type: 3}
   frontView:
     label: Front three-quarter
     point: {fileID: 1204790391}
-    allowWalking: 1
+    wholeCar: 1
   rearView:
     label: Rear three-quarter
     point: {fileID: 1059173447}
-    allowWalking: 1
+    wholeCar: 1
   sideView:
     label: Side profile
     point: {fileID: 793849535}
-    allowWalking: 1
+    wholeCar: 1
   engineBayView:
     label: Engine bay
     point: {fileID: 1137984408}
-    allowWalking: 0
+    wholeCar: 0
   driverSeatView:
     label: Driver seat
     point: {fileID: 433858902}
-    allowWalking: 0
+    wholeCar: 0
   rearSeatView:
     label: Rear seat
     point: {fileID: 1826592750}
-    allowWalking: 0
+    wholeCar: 0
   sunroofView:
     label: Roof (sunroof)
     point: {fileID: 927687760}
-    allowWalking: 0
+    wholeCar: 0
   orbitPivot: {fileID: 978891441}
   glideDuration: 1.4
   fadeDuration: 0.3
@@ -3382,8 +3382,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1918189075}
-  - component: {fileID: 1918189074}
-  - component: {fileID: 1918189073}
+  - component: {fileID: 1918189076}
   m_Layer: 0
   m_Name: Camera Rig
   m_TagString: Untagged
@@ -3391,56 +3390,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1918189073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1918189072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5027b221ba14aff47bfed388e5afaa84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FirstPersonController
-  cameraTransform: {fileID: 0}
-  walkSpeed: 5
-  sprintSpeed: 8
-  jumpHeight: 1.2
-  gravity: -20
-  groundAcceleration: 12
-  airAcceleration: 3
-  mouseSensitivity: 2
-  minPitch: -85
-  maxPitch: 85
-  lockCursorOnStart: 1
-  holdRightMouseToLook: 1
-  groundedStickForce: -2
---- !u!143 &1918189074
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1918189072}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 1.8
-  m_Radius: 0.3
-  m_SlopeLimit: 50
-  m_StepOffset: 0.4
-  m_SkinWidth: 0.03
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!4 &1918189075
 Transform:
   m_ObjectHideFlags: 0
@@ -3457,6 +3406,26 @@ Transform:
   - {fileID: 596163736}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1918189076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918189072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 091d35cffcb3a424797c059a4fffc1e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShowroomCamera
+  cameraTransform: {fileID: 596163736}
+  orbitSensitivity: 0.25
+  pivotHeight: 0.7
+  minElevation: 0
+  maxElevation: 70
+  panSensitivity: 0.15
+  minPitch: -80
+  maxPitch: 80
 --- !u!1 &1947985095
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,0 +1,456 @@
+/* GLE configurator: runtime UI Toolkit styles. Built by ConfiguratorUI.cs. */
+
+.cfg-root {
+    flex-grow: 1;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.cfg-root > .cfg-panel {
+    height: 100%;
+}
+
+/* Full-screen black used to cut between interior and exterior views. */
+.cfg-fade {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(0, 0, 0);
+}
+
+/* ------------------------------------------------------------------ what's included (right) */
+
+.cfg-root > .cfg-side {
+    width: 390px;
+    height: auto;
+    max-height: 100%;
+    padding: 20px 22px;
+}
+
+.cfg-side__top {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.cfg-side__top .cfg-section__title {
+    margin-bottom: 2px;
+}
+
+.cfg-side__compare {
+    margin-top: 14px;
+    -unity-text-align: middle-center;
+}
+
+.cfg-root Label {
+    white-space: normal;
+}
+
+/* ------------------------------------------------------------------ panel */
+
+.cfg-panel {
+    width: 430px;
+    flex-shrink: 0;
+    background-color: rgba(14, 15, 17, 0.88);
+    border-radius: 14px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.08);
+    color: rgb(236, 236, 238);
+    overflow: hidden;
+}
+
+.cfg-header {
+    padding: 22px 24px 14px 24px;
+}
+
+.cfg-brand {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: rgb(150, 152, 158);
+    margin: 0;
+    padding: 0;
+}
+
+.cfg-title {
+    font-size: 30px;
+    -unity-font-style: bold;
+    margin: 2px 0 0 0;
+    padding: 0;
+}
+
+.cfg-subtitle {
+    font-size: 15px;
+    color: rgb(190, 192, 198);
+    margin: 2px 0 0 0;
+    padding: 0;
+}
+
+/* ------------------------------------------------------------------ tabs */
+
+.cfg-tabs {
+    flex-direction: row;
+    padding: 0 18px;
+    border-bottom-width: 1px;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.cfg-tab {
+    flex-grow: 1;
+    margin: 0;
+    padding: 12px 0 10px 0;
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0 0 2px 0;
+    border-radius: 0;
+    border-color: rgba(0, 0, 0, 0);
+    color: rgb(150, 152, 158);
+    transition-property: color, border-color;
+    transition-duration: 0.15s;
+}
+
+.cfg-tab:hover {
+    color: rgb(236, 236, 238);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.cfg-tab--active {
+    color: rgb(255, 255, 255);
+    border-color: rgb(0, 173, 239);
+    -unity-font-style: bold;
+}
+
+/* ------------------------------------------------------------------ content */
+
+.cfg-content {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.cfg-section {
+    margin: 18px 20px 4px 20px;
+}
+
+.cfg-section__title {
+    font-size: 16px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    margin: 0 0 10px 0;
+    padding: 0;
+}
+
+.cfg-group {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: rgb(130, 132, 138);
+    margin: 10px 0 6px 0;
+    padding: 0;
+}
+
+.cfg-option-name {
+    font-size: 14px;
+    color: rgb(210, 212, 218);
+    margin: 0 0 2px 0;
+    padding: 0;
+    min-height: 20px;
+}
+
+.cfg-note {
+    font-size: 11px;
+    color: rgb(120, 122, 128);
+    margin: 12px 0 0 0;
+    padding: 0;
+}
+
+/* ------------------------------------------------------------------ cards */
+
+.cfg-card {
+    margin: 0 0 8px 0;
+    padding: 11px 14px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border-width: 1px;
+    border-radius: 9px;
+    border-color: rgba(255, 255, 255, 0.08);
+    align-items: flex-start;
+    transition-property: background-color, border-color;
+    transition-duration: 0.15s;
+}
+
+.cfg-card:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.cfg-card--selected,
+.cfg-card--selected:hover {
+    border-color: rgb(0, 173, 239);
+    background-color: rgba(0, 173, 239, 0.12);
+}
+
+.cfg-card__title {
+    font-size: 15px;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    margin: 0;
+    padding: 0;
+}
+
+.cfg-card__meta {
+    font-size: 13px;
+    color: rgb(0, 173, 239);
+    margin: 3px 0 0 0;
+    padding: 0;
+}
+
+.cfg-card__detail {
+    font-size: 12px;
+    color: rgb(160, 162, 168);
+    margin: 2px 0 0 0;
+    padding: 0;
+}
+
+/* ------------------------------------------------------------------ swatches */
+
+.cfg-swatches {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.cfg-swatch {
+    width: 44px;
+    height: 44px;
+    margin: 0 8px 8px 0;
+    padding: 3px;
+    border-width: 2px;
+    border-radius: 22px;
+    border-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
+    transition-property: border-color, scale;
+    transition-duration: 0.15s;
+}
+
+.cfg-swatch:hover {
+    border-color: rgba(255, 255, 255, 0.35);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.cfg-swatch--selected,
+.cfg-swatch--selected:hover {
+    border-color: rgb(0, 173, 239);
+}
+
+.cfg-swatch__chip {
+    flex-grow: 1;
+    border-radius: 17px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* ------------------------------------------------------------------ buttons */
+
+.cfg-action {
+    margin: 0 0 8px 0;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: rgb(236, 236, 238);
+    background-color: rgba(255, 255, 255, 0.07);
+    border-width: 1px;
+    border-radius: 9px;
+    border-color: rgba(255, 255, 255, 0.12);
+    -unity-text-align: middle-left;
+    transition-property: background-color, border-color;
+    transition-duration: 0.15s;
+}
+
+.cfg-action:hover {
+    background-color: rgba(255, 255, 255, 0.13);
+}
+
+.cfg-action--active,
+.cfg-action--active:hover {
+    border-color: rgb(0, 173, 239);
+    background-color: rgba(0, 173, 239, 0.16);
+}
+
+.cfg-action--small {
+    margin: 0;
+    padding: 6px 14px;
+    -unity-text-align: middle-center;
+}
+
+/* ------------------------------------------------------------------ equipment list */
+
+.cfg-legend {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0 0 8px 0;
+}
+
+.cfg-legend__text {
+    font-size: 11px;
+    color: rgb(150, 152, 158);
+    margin: 0 10px 0 4px;
+    padding: 0;
+}
+
+.cfg-feature {
+    flex-direction: row;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom-width: 1px;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.cfg-feature__name {
+    font-size: 13px;
+    color: rgb(222, 224, 228);
+    margin: 0 0 0 10px;
+    padding: 0;
+    flex-shrink: 1;
+}
+
+.cfg-feature__name--missing {
+    color: rgb(110, 112, 118);
+}
+
+.cfg-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    border-radius: 9px;
+}
+
+.cfg-icon--standard {
+    color: rgb(255, 255, 255);
+    background-color: rgb(46, 160, 92);
+}
+
+.cfg-icon--optional {
+    color: rgb(240, 180, 60);
+    border-width: 1px;
+    border-color: rgb(240, 180, 60);
+}
+
+.cfg-icon--none {
+    color: rgb(95, 97, 103);
+}
+
+/* ------------------------------------------------------------------ summary & hint */
+
+.cfg-summary {
+    font-size: 12px;
+    color: rgb(170, 172, 178);
+    padding: 12px 24px 16px 24px;
+    margin: 0;
+    border-top-width: 1px;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.cfg-hint-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20px;
+    align-items: center;
+}
+
+.cfg-hint {
+    padding: 8px 14px;
+    font-size: 12px;
+    color: rgb(220, 222, 226);
+    background-color: rgba(14, 15, 17, 0.7);
+    border-radius: 8px;
+}
+
+/* ------------------------------------------------------------------ compare overlay */
+
+.cfg-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.55);
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.cfg-dialog {
+    max-width: 100%;
+    max-height: 100%;
+    padding: 22px 24px;
+    background-color: rgb(18, 19, 22);
+    border-radius: 14px;
+    border-width: 1px;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgb(236, 236, 238);
+}
+
+.cfg-dialog__top {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.cfg-table {
+    flex-shrink: 1;
+}
+
+.cfg-row {
+    flex-direction: row;
+    border-bottom-width: 1px;
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.cfg-cell {
+    width: 132px;
+    min-height: 32px;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 6px 8px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+    border-radius: 0;
+    font-size: 12px;
+    color: rgb(222, 224, 228);
+    white-space: normal;
+}
+
+.cfg-cell--first {
+    width: 250px;
+    align-items: flex-start;
+}
+
+.cfg-cell--head {
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+}
+
+.cfg-cell--head:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+}
+
+.cfg-cell--selected,
+.cfg-cell--selected:hover {
+    background-color: rgba(0, 173, 239, 0.14);
+}
+
+.cfg-cell__text {
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    -unity-text-align: middle-center;
+}
+
+.cfg-cell--first > .cfg-cell__text {
+    -unity-text-align: middle-left;
+}

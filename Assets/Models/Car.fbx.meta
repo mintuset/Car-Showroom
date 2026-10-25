@@ -3,7 +3,337 @@ guid: 68eae715b2d082c46bf814c8bc0e73c5
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AluminiumLightsPatternLines.002
+    second: {fileID: 2100000, guid: c620b03d9e6beac4cb585f576d04b385, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: AluminiumTaillights.002
+    second: {fileID: 2100000, guid: 027d89a644afc86469279645a630bf65, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Black.002
+    second: {fileID: 2100000, guid: e8cae3854ac3e4540b316f893bda6eae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CarPaint.002
+    second: {fileID: 2100000, guid: 27849dcc5b67c094c8938d17a0e575ff, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chrome.002
+    second: {fileID: 2100000, guid: 1455c2dff078b6d478d4711b118c43e0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChromeReflectorBump.002
+    second: {fileID: 2100000, guid: f646c5fb13e06dc4fad19d94a50b30f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChromeShinyTrim.002
+    second: {fileID: 2100000, guid: 2f105f694a8a2bb45a8213058bb49847, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassBMP.002
+    second: {fileID: 2100000, guid: 4dc1bb0324bf159408da87f7c01f50c3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassBMPAdd.002
+    second: {fileID: 2100000, guid: da1d2eaae60972f478324bc187b0f2bf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassFrLogo.002
+    second: {fileID: 2100000, guid: c1e40b13b27b1774c93e1504c0a618dd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassGlowTaillights.002
+    second: {fileID: 2100000, guid: 0cf9400c0e3e61348b2273570a398b46, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassLights.002
+    second: {fileID: 2100000, guid: cc8b35e76704e9847a4697b734e1cde3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassLightsDk.002
+    second: {fileID: 2100000, guid: 4a285b2f19d47d9498165e79294d2141, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassLightsRedDark.002
+    second: {fileID: 2100000, guid: 3d57d9a42d54a4b45af531c1589e8b1a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassRedLights.002
+    second: {fileID: 2100000, guid: a5ee8685dbec6e04c995ee3e2625c851, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassRedLightsAdd.002
+    second: {fileID: 2100000, guid: 5d864bcdeac698d4181d8c7147c76854, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassRedLow.002
+    second: {fileID: 2100000, guid: d2297798c807ced4db74407416258401, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassWhiteTaillights.002
+    second: {fileID: 2100000, guid: 12af66baf7aaab042982d330170b7f28, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassWindsTexture.002
+    second: {fileID: 2100000, guid: aaec8609ad4d7f142bde12df208d8341, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GridHexagon.002
+    second: {fileID: 2100000, guid: 37865341133a65a4dbd80bf4a285b5e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: HdLightsLens.002
+    second: {fileID: 2100000, guid: 08773f5bf561eec45ab861e2d50346b1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntAluminium.002
+    second: {fileID: 2100000, guid: 9f87837aac47fd2428e3ace02cb9347f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntAluminiumPattern.002
+    second: {fileID: 2100000, guid: 7f05972acc3dde041accbd972e056be6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntAmbilightEmissive.002
+    second: {fileID: 2100000, guid: 179aaafe5d0c35046b124925ed7a964c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntButtons.002
+    second: {fileID: 2100000, guid: 89338f8cfcda3104d869d2476bd9f007, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntFabricNetting.002
+    second: {fileID: 2100000, guid: 0c8434fd7fc4b36448e8373cd6bcccb1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntGlassBlue.002
+    second: {fileID: 2100000, guid: fb77011533fc75845b4de825c950f8f9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntGridAdd.002
+    second: {fileID: 2100000, guid: 3f37803d8fe2fec46b651a2fb0d22c22, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntLeatherBeige.002
+    second: {fileID: 2100000, guid: 3f4803ff18364f64fb25d0400b4b580d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntLeatherPatternBeige.002
+    second: {fileID: 2100000, guid: 53d1237f621b5ff48b9aec961179c3a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntPlasticBeige.002
+    second: {fileID: 2100000, guid: b496c34ef47177f4690f263b9ddf597c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntPlasticBlackBMP.002
+    second: {fileID: 2100000, guid: 2734ec976a4538e4cad3c83f85e9cba5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntPlasticBlackGlossy.002
+    second: {fileID: 2100000, guid: 36b9636be45727e44bc50613049e76f4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntPlasticGridBlack.002
+    second: {fileID: 2100000, guid: 24b307d724c161f45ab87cf456abe8be, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntSeatBelt.002
+    second: {fileID: 2100000, guid: 1ff0d37f78bee26448ff1f8e92b667a5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntSpeakers.002
+    second: {fileID: 2100000, guid: 7e3370e982b06c643b382148c537d83b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntStitchesBeige.002
+    second: {fileID: 2100000, guid: 3ca75ac3fe7e8314dbf036fbe0ff5d81, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: IntStitchesWheelDark.002
+    second: {fileID: 2100000, guid: 388574e9b27c96a48908c73be743b4ae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LightEmissive.002
+    second: {fileID: 2100000, guid: f0129cb99d0551347920ec4d39e387bf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LightEmissiveRed.002
+    second: {fileID: 2100000, guid: 8ad66187a0c55184ca004866f24b5ce9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MercedeBenzTextLogoLight.002
+    second: {fileID: 2100000, guid: 17cdebce076d0fb4ca72e99741e17b4f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MetalDark.002
+    second: {fileID: 2100000, guid: 8a868f1f741d6d5419ca49b491ca3dc6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MetalDeepBlack.002
+    second: {fileID: 2100000, guid: c30a87d0d0b884c4b96db6d1b94043b8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MetalDkTaillights.002
+    second: {fileID: 2100000, guid: 6ea4c1b61e9da8d41bd9c3048c1578ed, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mirror.002
+    second: {fileID: 2100000, guid: e04e078ba43b91044aa0626b5eddaada, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PlasticBlack.002
+    second: {fileID: 2100000, guid: 85eb4b50ead95f4438ad22768f915c78, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PlasticBlue.002
+    second: {fileID: 2100000, guid: 9c64c5b20232cc44caf34926349f7c13, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PlasticDeepBlack.002
+    second: {fileID: 2100000, guid: 972b75d27b7f71649a99d5ec637262d3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PlasticNumber.002
+    second: {fileID: 2100000, guid: 5b1a1bcac34cac841840d59d4c043a7e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PlasticWhiteEngine.002
+    second: {fileID: 2100000, guid: 7c4f906a7aa90b142adf12c11f0c71cd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rubber.002
+    second: {fileID: 2100000, guid: ba3123562713db047b914505e0cdcd2e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: extAluminium.002
+    second: {fileID: 2100000, guid: 0670cfca6325e424ba099f3084480c53, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intAlumButtons.002
+    second: {fileID: 2100000, guid: 7413c0cad8e02814e959e052de2ef1b5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intDoorAlumLogoMB.002
+    second: {fileID: 2100000, guid: 7e658f4e544e41b4ab8565102bbbee74, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intFabricLight.002
+    second: {fileID: 2100000, guid: 2ff6fcc98a893204f9e3a0b151901627, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intGlassClearGloss.002
+    second: {fileID: 2100000, guid: 3863df7beaf1cde4889171b1afe4c23f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intLeatherDark.002
+    second: {fileID: 2100000, guid: 317e6707c26d7834a98f120a7b2efcde, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intLeatherStWheel.002
+    second: {fileID: 2100000, guid: 692f489e32ff34743bfabce1574f56e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intLeatherSteeringWheelBump.002
+    second: {fileID: 2100000, guid: c1190ec5de60aed4bbf331affbea0b97, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intPlasticDkPlain.002
+    second: {fileID: 2100000, guid: 0ee783fb0462b8446b5fe8aeb0307fea, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intPlasticGlossy.002
+    second: {fileID: 2100000, guid: 6ac79d6518de44d429afccc46b99222e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intPlasticRed.002
+    second: {fileID: 2100000, guid: 179c14aef6887c34790e970f7da5b3f8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intRubber.002
+    second: {fileID: 2100000, guid: 71116cce01ea38146841809c6b303c8c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intStitchesDark.002
+    second: {fileID: 2100000, guid: 51473efdbf56ef94ca3aceacc233fbf9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intTexDevices.002
+    second: {fileID: 2100000, guid: 1e9adc18a22c7ae469f7fc59ea8e9517, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: intWoodDash.002
+    second: {fileID: 2100000, guid: e0ee385d28bfdf547a1144558095f16c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

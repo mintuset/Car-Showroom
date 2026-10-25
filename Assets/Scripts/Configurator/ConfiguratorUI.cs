@@ -21,6 +21,8 @@ public class ConfiguratorUI : MonoBehaviour
         [FormerlySerializedAs("allowWalking")]
         [Tooltip("Shows the whole car from outside. Paint and wheel changes made from other views jump to one of these.")]
         public bool wholeCar;
+        [Tooltip("Vertical field of view for this view. 0 uses the camera's default for inside or outside the car.")]
+        public float fieldOfView;
     }
 
     private enum Tab { Model, Exterior, Interior, Views }
@@ -186,7 +188,7 @@ public class ConfiguratorUI : MonoBehaviour
     private void Arrive(Viewpoint view)
     {
         GetPose(view, out Vector3 eye, out float yaw, out float pitch);
-        cameraRig.Place(eye, yaw, pitch, IsInterior(view) ? ShowroomCamera.DragMode.Pan : ShowroomCamera.DragMode.Orbit);
+        cameraRig.Place(eye, yaw, pitch, IsInterior(view) ? ShowroomCamera.DragMode.Pan : ShowroomCamera.DragMode.Orbit, view.fieldOfView);
         car.SetCabinLight(IsInterior(view));
     }
 
@@ -220,6 +222,8 @@ public class ConfiguratorUI : MonoBehaviour
         Vector3 startEye = cameraRig.EyePosition;
         float startYaw = cameraRig.Yaw;
         float startPitch = cameraRig.Pitch;
+        float startFov = cameraRig.FieldOfView;
+        float endFov = cameraRig.ResolveFieldOfView(view.fieldOfView, ShowroomCamera.DragMode.Orbit);
         car.SetCabinLight(false);
 
         // Interpolate in cylindrical coordinates around the car: angle, radius and height.
@@ -240,7 +244,8 @@ public class ConfiguratorUI : MonoBehaviour
                 pivot.x + Mathf.Cos(angle) * radius,
                 Mathf.Lerp(startEye.y, endEye.y, e),
                 pivot.z + Mathf.Sin(angle) * radius);
-            cameraRig.Place(eye, Mathf.LerpAngle(startYaw, endYaw, e), Mathf.Lerp(startPitch, endPitch, e), ShowroomCamera.DragMode.Orbit);
+            cameraRig.Place(eye, Mathf.LerpAngle(startYaw, endYaw, e), Mathf.Lerp(startPitch, endPitch, e), ShowroomCamera.DragMode.Orbit,
+                Mathf.Lerp(startFov, endFov, e));
             yield return null;
         }
 

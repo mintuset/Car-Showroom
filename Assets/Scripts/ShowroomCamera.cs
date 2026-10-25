@@ -16,6 +16,12 @@ public class ShowroomCamera : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform cameraTransform;
 
+    [Header("Lens")]
+    [SerializeField, Tooltip("Vertical field of view outside the car. A longer lens keeps the body free of wide-angle distortion.")]
+    private float orbitFieldOfView = 40f;
+    [SerializeField, Tooltip("Vertical field of view from the seats, wide enough to take in the dashboard and pillars.")]
+    private float panFieldOfView = 60f;
+
     [Header("Orbit (outside)")]
     [SerializeField, Tooltip("Degrees per pixel of mouse drag.")]
     private float orbitSensitivity = 0.25f;
@@ -38,6 +44,7 @@ public class ShowroomCamera : MonoBehaviour
     private float pitch;
     private float seatYaw;
     private bool dragging;
+    private Camera lens;
 
     public DragMode Mode { get; private set; } = DragMode.Orbit;
 
@@ -65,6 +72,7 @@ public class ShowroomCamera : MonoBehaviour
 
         if (cameraTransform != null)
         {
+            lens = cameraTransform.GetComponent<Camera>();
             Vector3 euler = cameraTransform.eulerAngles;
             eye = cameraTransform.position;
             yaw = euler.y;
@@ -95,14 +103,24 @@ public class ShowroomCamera : MonoBehaviour
         Apply();
     }
 
-    /// <summary>Puts the camera at <paramref name="eyePosition"/> facing <paramref name="yaw"/> / <paramref name="pitch"/> (degrees).</summary>
-    public void Place(Vector3 eyePosition, float yaw, float pitch, DragMode mode)
+    public float FieldOfView => lens != null ? lens.fieldOfView : orbitFieldOfView;
+
+    /// <summary>A viewpoint's own field of view, or the default for <paramref name="mode"/> when it has none (0).</summary>
+    public float ResolveFieldOfView(float fieldOfView, DragMode mode) =>
+        fieldOfView > 0f ? fieldOfView : mode == DragMode.Orbit ? orbitFieldOfView : panFieldOfView;
+
+    /// <summary>
+    /// Puts the camera at <paramref name="eyePosition"/> facing <paramref name="yaw"/> / <paramref name="pitch"/> (degrees),
+    /// with a vertical <paramref name="fieldOfView"/>; 0 uses the default for <paramref name="mode"/>.
+    /// </summary>
+    public void Place(Vector3 eyePosition, float yaw, float pitch, DragMode mode, float fieldOfView = 0f)
     {
         eye = eyePosition;
         this.yaw = yaw;
         this.pitch = pitch;
         seatYaw = yaw;
         Mode = mode;
+        if (lens != null) lens.fieldOfView = ResolveFieldOfView(fieldOfView, mode);
         Apply();
     }
 

@@ -3,7 +3,42 @@ guid: a0c1d72fc2ef5be4b893743e799068e4
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Clipper.006
+    second: {fileID: 2100000, guid: 135478efd8d968b46a9ee26d90201e10, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rim.002
+    second: {fileID: 2100000, guid: cb7a544950002b044b732cad81f18086, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rough Plastic.002
+    second: {fileID: 2100000, guid: 24a24028fda49ca46a9d91195254231a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Side wall.002
+    second: {fileID: 2100000, guid: 77109d42da0d8894883cad83ff42c138, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Steel.007
+    second: {fileID: 2100000, guid: 16a5491a262d8da4b84cba6bf0fd2d1d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tyre.006
+    second: {fileID: 2100000, guid: ccdab421985f2174293afa104003b3af, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wheel Brake Disk.006
+    second: {fileID: 2100000, guid: 2c33ee0d421d992429a3871f8403cd9c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

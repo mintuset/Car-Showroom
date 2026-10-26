@@ -1,3 +1,5 @@
+using System;
+using System.Text;
 using UnityEngine;
 
 /// <summary>
@@ -78,9 +80,13 @@ public static class GleCatalog
         public readonly UpholsteryOption[] Upholstery;
         /// <summary>One entry per <see cref="Features"/> row.</summary>
         public readonly Availability[] Equipment;
+        /// <summary>US base MSRP, excluding destination.</summary>
+        public readonly int BasePriceUsd;
+        /// <summary>One entry per <see cref="Wheels"/> option; the default wheel is always 0.</summary>
+        public readonly int[] WheelPricesUsd;
 
         public Variant(string name, string powertrain, string output, string zeroToSixty, int defaultWheel,
-            PaintOption[] paints, UpholsteryOption[] upholstery, string equipment)
+            PaintOption[] paints, UpholsteryOption[] upholstery, string equipment, int basePriceUsd, int[] wheelPricesUsd)
         {
             Name = name;
             Powertrain = powertrain;
@@ -90,6 +96,8 @@ public static class GleCatalog
             Paints = paints;
             Upholstery = upholstery;
             Equipment = ParseEquipment(equipment);
+            BasePriceUsd = basePriceUsd;
+            WheelPricesUsd = wheelPricesUsd;
         }
     }
 
@@ -185,6 +193,7 @@ public static class GleCatalog
     };
 
     // Equipment strings: one char per Features row. S = standard, O = optional, - = not available.
+    // Wheel prices follow the Wheels order; a wheel smaller than the trim's standard set is priced at 0 (no credit).
     public static readonly Variant[] Variants =
     {
         new("AMG GLE 63 S 4MATIC+", "Handcrafted AMG 4.0L V8 biturbo, hybrid assist", "603 hp", "3.7 s", 0,
@@ -194,7 +203,8 @@ public static class GleCatalog
                 Seat(Nappa, "Black"), Seat(Nappa, "Macchiato Beige"), Seat(Nappa, "Red Pepper"), Seat(Nappa, "White"),
                 Seat(Nappa, "Yacht Blue", true), Seat(Nappa, "Truffle Brown", true), Seat(Nappa, "Carmine Red", true),
             },
-            "S-SSSSSSSOSSSOOO-"),
+            "S-SSSSSSSOSSSOOO-",
+            131_800, new[] { 0, 0, 200, 3_350 }),
         new("AMG GLE 53 4MATIC+", "AMG 3.0L inline-6 turbo, hybrid assist", "428 hp", "4.9 s", 1,
             Paints(AlpineGrey, MoonlightWhite, MysticBlue, IrelandGreen, SiliconGrey, CoteDAzur),
             new[]
@@ -202,7 +212,8 @@ public static class GleCatalog
                 Seat(Leather, "Black"), Seat(Leather, "Macchiato Beige"), Seat(Leather, "Red Pepper"), Seat(Leather, "White"),
                 Seat(Nappa, "Yacht Blue", true), Seat(Nappa, "Carmine Red", true),
             },
-            "S-SSSSSSSOOSSOOO-"),
+            "S-SSSSSSSOOSSOOO-",
+            90_000, new[] { 1_100, 0, 1_300, 4_450 }),
         new("GLE 580 4MATIC", "4.0L V8 biturbo, mild hybrid", "510 hp", "4.3 s", 1,
             Paints(AlpineGrey, MoonlightWhite, MysticBlue, IrelandGreen),
             new[]
@@ -210,7 +221,8 @@ public static class GleCatalog
                 Seat(Leather, "Black"), Seat(Leather, "Macchiato Beige"), Seat(Leather, "Bahia Brown"),
                 Seat(Leather, "Catalana Beige"), Seat(Nappa, "Truffle Brown", true),
             },
-            "S-SSSSSSSOSSSOOOO"),
+            "S-SSSSSSSOSSSOOOO",
+            90_000, new[] { 1_100, 0, 1_100, 2_750 }),
         new("GLE 450e 4MATIC", "2.0L inline-4 turbo plug-in hybrid", "381 hp", "5.8 s", 2,
             Paints(AlpineGrey),
             new[]
@@ -218,7 +230,8 @@ public static class GleCatalog
                 Seat(MbTex, "Black"), Seat(MbTex, "Macchiato Beige"), Seat(MbTex, "Bahia Brown"),
                 Seat(Nappa, "Black"), Seat(Nappa, "Macchiato Beige"),
             },
-            "SSOOOSSS-OOOOOOO-"),
+            "SSOOOSSS-OOOOOOO-",
+            72_250, new[] { 1_100, 1_050, 0, 2_750 }),
         new("GLE 450 4MATIC", "3.0L inline-6 turbo, mild hybrid", "375 hp", "5.3 s", 1,
             Paints(AlpineGrey, MysticBlue, IrelandGreen),
             new[]
@@ -226,14 +239,66 @@ public static class GleCatalog
                 Seat(MbTex, "Black"), Seat(MbTex, "Macchiato Beige"), Seat(MbTex, "Bahia Brown"),
                 Seat(Nappa, "Black"), Seat(Nappa, "Macchiato Beige"),
             },
-            "S-SSOSSS-OOOSOOOO"),
+            "S-SSOSSS-OOOSOOOO",
+            72_250, new[] { 1_100, 0, 1_100, 2_750 }),
         new("GLE 350 4MATIC", "2.0L inline-4 turbo, mild hybrid", "255 hp", "7.0 s", 2,
             Paints(AlpineGrey), MbTexSeats,
-            "S-O--SSS--OOOOOO-"),
+            "S-O--SSS--OOOOOO-",
+            64_750, new[] { 1_100, 1_050, 0, 2_750 }),
         new("GLE 350", "2.0L inline-4 turbo, mild hybrid (RWD)", "255 hp", "6.9 s", 2,
             Paints(AlpineGrey), MbTexSeats,
-            "--O--SSS--OOOOOO-"),
+            "--O--SSS--OOOOOO-",
+            62_250, new[] { 1_100, 1_050, 0, 2_750 }),
     };
+
+    // ---------------------------------------------------------------------
+    // Pricing
+    // ---------------------------------------------------------------------
+    // Base MSRPs: Edmunds / U.S. News 2026 GLE trim pricing. Destination: U.S. News.
+    // Options: dealer window stickers (metallic $750, MANUFAKTUR paint $1,750, Exclusive Nappa $1,560)
+    // and Edmunds per-trim option lists (wheels, MANUFAKTUR interior $9,000).
+    // Converted at the Oct 2026 rate; excludes Indian import duty, GST, registration and insurance.
+    public const int DestinationUsd = 1_350;
+    public const float UsdToInr = 95.00f;
+
+    const int MetallicPaintUsd = 750;
+    const int ManufakturPaintUsd = 1_750;
+    const int NappaUpgradeUsd = 1_560;
+    const int ManufakturInteriorUsd = 9_000;
+
+    public static int PaintPriceUsd(PaintOption paint) =>
+        paint.Manufaktur ? ManufakturPaintUsd
+        : paint.Finish == PaintFinish.Metallic ? MetallicPaintUsd
+        : 0;
+
+    /// <summary>The first upholstery entry of each trim is its standard material.</summary>
+    public static int UpholsteryPriceUsd(Variant variant, UpholsteryOption seat) =>
+        seat.Manufaktur ? ManufakturInteriorUsd
+        : seat.Material == variant.Upholstery[0].Material ? 0
+        : NappaUpgradeUsd;
+
+    public static long ToInr(int usd) => (long)Mathf.Round(usd * UsdToInr);
+
+    /// <summary>Indian digit grouping: ₹1,25,21,000.</summary>
+    public static string FormatInr(long rupees)
+    {
+        string digits = Math.Abs(rupees).ToString();
+        var sb = new StringBuilder();
+        int firstGroup = digits.Length > 3 ? digits.Length - 3 : digits.Length;
+        // Everything before the last three digits is grouped in pairs.
+        int lead = firstGroup % 2 == 0 ? 2 : 1;
+        for (int i = 0; i < digits.Length; i++)
+        {
+            if (i > 0 && i < firstGroup && (i - lead) % 2 == 0) sb.Append(',');
+            if (i == firstGroup && firstGroup != digits.Length) sb.Append(',');
+            sb.Append(digits[i]);
+        }
+        return (rupees < 0 ? "-₹" : "₹") + sb;
+    }
+
+    /// <summary>Lakh / crore shorthand, as Indian price lists quote it.</summary>
+    public static string FormatInrShort(long rupees) =>
+        rupees >= 1_00_00_000 ? $"₹{rupees / 1e7:0.00} Cr" : $"₹{rupees / 1e5:0.00} Lakh";
 
     static Availability[] ParseEquipment(string equipment)
     {

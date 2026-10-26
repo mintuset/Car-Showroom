@@ -57,12 +57,18 @@ public class ConfiguratorUI : MonoBehaviour
     private Tab tab = Tab.Model;
     private Viewpoint currentView;
     private bool includedCollapsed;
+    private bool priceCollapsed;
+    private long shownTotalInr;
     private Coroutine transition;
     private float fadeAlpha = 1f;
 
     private VisualElement root;
     private VisualElement fade;
     private VisualElement includedPanel;
+    private ScrollView includedScroll;
+    private VisualElement pricePanel;
+    private Label priceTotal;
+    private int totalAnimationId;
     private Label variantSubtitle;
     private Label summaryLabel;
     private ScrollView content;
@@ -317,10 +323,23 @@ public class ConfiguratorUI : MonoBehaviour
         summaryLabel = MakeLabel("", "cfg-summary");
         panel.Add(summaryLabel);
 
+        // "What's included" on top, price calculator docked below it.
+        var sideGroup = new VisualElement();
+        sideGroup.AddToClassList("cfg-side-group");
+        sideGroup.pickingMode = PickingMode.Ignore;
+        root.Add(sideGroup);
+
         includedPanel = new VisualElement();
         includedPanel.AddToClassList("cfg-panel");
         includedPanel.AddToClassList("cfg-side");
-        root.Add(includedPanel);
+        includedPanel.AddToClassList("cfg-included");
+        sideGroup.Add(includedPanel);
+
+        pricePanel = new VisualElement();
+        pricePanel.AddToClassList("cfg-panel");
+        pricePanel.AddToClassList("cfg-side");
+        pricePanel.AddToClassList("cfg-price");
+        sideGroup.Add(pricePanel);
 
         var hintBar = new VisualElement();
         hintBar.AddToClassList("cfg-hint-bar");
@@ -362,6 +381,7 @@ public class ConfiguratorUI : MonoBehaviour
             case Tab.Views: BuildViewsTab(); break;
         }
         content.schedule.Execute(() => content.scrollOffset = new Vector2(0f, scroll));
+        BuildPricePanel();
         BuildIncludedPanel();
 
         summaryLabel.text =
@@ -382,13 +402,104 @@ public class ConfiguratorUI : MonoBehaviour
             card.Add(MakeLabel(v.Name, "cfg-card__title"));
             card.Add(MakeLabel($"{v.Output}  ·  0-60 mph {v.ZeroToSixty}", "cfg-card__meta"));
             card.Add(MakeLabel(v.Powertrain, "cfg-card__detail"));
+            card.Add(MakeLabel("From " + GleCatalog.FormatInrShort(GleCatalog.ToInr(v.BasePriceUsd)), "cfg-card__price"));
             section.Add(card);
         }
     }
 
+    private void BuildPricePanel()
+    {
+        pricePanel.Clear();
+
+        GleCatalog.PaintOption paint = Variant.Paints[paintIndex];
+        GleCatalog.UpholsteryOption seat = Variant.Upholstery[upholsteryIndex];
+        int wheel = car.WheelIndex;
+        int paintUsd = GleCatalog.PaintPriceUsd(paint);
+        int wheelUsd = Variant.WheelPricesUsd[wheel];
+        int seatUsd = GleCatalog.UpholsteryPriceUsd(Variant, seat);
+        long total = GleCatalog.ToInr(Variant.BasePriceUsd + paintUsd + wheelUsd + seatUsd + GleCatalog.DestinationUsd);
+
+        var top = new VisualElement();
+        top.AddToClassList("cfg-side__top");
+        var titles = new VisualElement();
+        titles.Add(MakeLabel("Price calculator", "cfg-section__title"));
+        titles.Add(MakeLabel("Estimated price (INR)", "cfg-option-name"));
+        top.Add(titles);
+        var toggle = new Button(() => { priceCollapsed = !priceCollapsed; BuildPricePanel(); })
+        {
+            text = priceCollapsed ? "Show" : "Minimize",
+        };
+        toggle.AddToClassList("cfg-action");
+        toggle.AddToClassList("cfg-action--small");
+        top.Add(toggle);
+        pricePanel.Add(top);
+
+        priceTotal = MakeLabel("", "cfg-price__total");
+        pricePanel.Add(priceTotal);
+        var full = MakeLabel(GleCatalog.FormatInr(total), "cfg-price__full");
+        pricePanel.Add(full);
+        AnimateTotal(total);
+
+        if (priceCollapsed) return;
+
+        AddPriceRow("Base price", Variant.Name, Variant.BasePriceUsd, true);
+        AddPriceRow("Paint", paint.Name, paintUsd, false);
+        AddPriceRow("Wheels", GleCatalog.Wheels[wheel].Name, wheelUsd, false);
+        AddPriceRow("Upholstery", seat.DisplayName, seatUsd, false);
+        AddPriceRow("Destination & delivery", null, GleCatalog.DestinationUsd, true);
+    }
+
+    private void AddPriceRow(string title, string detail, int usd, bool alwaysShowPrice)
+    {
+        var row = new VisualElement();
+        row.AddToClassList("cfg-price__row");
+
+        var text = new VisualElement();
+        text.AddToClassList("cfg-price__text");
+        text.Add(MakeLabel(title, "cfg-price__title"));
+        if (!string.IsNullOrEmpty(detail)) text.Add(MakeLabel(detail, "cfg-price__detail"));
+        row.Add(text);
+
+        bool included = usd == 0 && !alwaysShowPrice;
+        var amount = MakeLabel(included ? "Included" : GleCatalog.FormatInr(GleCatalog.ToInr(usd)), "cfg-price__amount");
+        amount.EnableInClassList("cfg-price__amount--included", included);
+        row.Add(amount);
+
+        pricePanel.Add(row);
+    }
+
+    /// <summary>Counts the headline total from the previous value to the new one.</summary>
+    private void AnimateTotal(long target)
+    {
+        // UI Toolkit recycles finished animations, so none are kept or stopped: a newer count-up just
+        // makes older ones (still ticking on the label the panel rebuild detached) do nothing.
+        int id = ++totalAnimationId;
+        long from = shownTotalInr == 0 ? target : shownTotalInr;
+        priceTotal.text = GleCatalog.FormatInrShort(from);
+        if (from == target)
+        {
+            shownTotalInr = target;
+            return;
+        }
+
+        Label label = priceTotal;
+        label.experimental.animation.Start(0f, 1f, 450, (_, t) =>
+        {
+            if (id != totalAnimationId) return;
+            float e = 1f - Mathf.Pow(1f - t, 3f);
+            shownTotalInr = t >= 1f ? target : (long)Mathf.Lerp(from, target, e);
+            label.text = GleCatalog.FormatInrShort(shownTotalInr);
+        });
+    }
+
+    private string PriceTag(int usd) => usd == 0 ? "Included" : "+" + GleCatalog.FormatInr(GleCatalog.ToInr(usd));
+
     private void BuildIncludedPanel()
     {
+        // Rebuilt on every selection, so keep the list where the user scrolled it.
+        float scroll = includedScroll != null ? includedScroll.scrollOffset.y : 0f;
         includedPanel.Clear();
+        includedScroll = null;
 
         var top = new VisualElement();
         top.AddToClassList("cfg-side__top");
@@ -398,7 +509,7 @@ public class ConfiguratorUI : MonoBehaviour
         top.Add(titles);
         var toggle = new Button(() => { includedCollapsed = !includedCollapsed; BuildIncludedPanel(); })
         {
-            text = includedCollapsed ? "Show" : "Hide",
+            text = includedCollapsed ? "Show" : "Minimize",
         };
         toggle.AddToClassList("cfg-action");
         toggle.AddToClassList("cfg-action--small");
@@ -408,6 +519,10 @@ public class ConfiguratorUI : MonoBehaviour
         if (includedCollapsed) return;
 
         includedPanel.Add(MakeLegend());
+
+        includedScroll = new ScrollView(ScrollViewMode.Vertical);
+        includedScroll.AddToClassList("cfg-side__scroll");
+        includedPanel.Add(includedScroll);
         for (int f = 0; f < GleCatalog.Features.Length; f++)
         {
             var row = new VisualElement();
@@ -416,21 +531,22 @@ public class ConfiguratorUI : MonoBehaviour
             var name = MakeLabel(GleCatalog.Features[f], "cfg-feature__name");
             name.EnableInClassList("cfg-feature__name--missing", Variant.Equipment[f] == GleCatalog.Availability.NotAvailable);
             row.Add(name);
-            includedPanel.Add(row);
+            includedScroll.Add(row);
         }
+        ScrollView list = includedScroll;
+        list.schedule.Execute(() => list.scrollOffset = new Vector2(0f, scroll));
 
         var compare = new Button(() => ShowCompare(true)) { text = "Compare all models" };
         compare.AddToClassList("cfg-action");
         compare.AddToClassList("cfg-side__compare");
         includedPanel.Add(compare);
-        includedPanel.Add(MakeLabel(GleCatalog.SourceNote, "cfg-note"));
     }
 
     private void BuildExteriorTab()
     {
         GleCatalog.PaintOption[] paints = Variant.Paints;
         var paint = Section("Paint");
-        var paintName = MakeLabel(paints[paintIndex].Name, "cfg-option-name");
+        var paintName = MakeLabel(PaintLabel(paints[paintIndex]), "cfg-option-name");
         paint.Add(paintName);
         paint.Add(MakeLabel("Standard & metallic", "cfg-group"));
         paint.Add(SwatchGrid(paints, p => !p.Manufaktur, paintName));
@@ -450,6 +566,7 @@ public class ConfiguratorUI : MonoBehaviour
             row.EnableInClassList("cfg-card--selected", i == car.WheelIndex);
             row.Add(MakeLabel(w.Name + (i == Variant.DefaultWheel ? "   (standard)" : ""), "cfg-card__title"));
             row.Add(MakeLabel(w.Description, "cfg-card__detail"));
+            row.Add(MakeLabel(PriceTag(Variant.WheelPricesUsd[i]), "cfg-card__price"));
             wheels.Add(row);
         }
 
@@ -465,7 +582,7 @@ public class ConfiguratorUI : MonoBehaviour
     {
         GleCatalog.UpholsteryOption[] seats = Variant.Upholstery;
         var upholstery = Section("Seat upholstery");
-        var seatName = MakeLabel(seats[upholsteryIndex].DisplayName, "cfg-option-name");
+        var seatName = MakeLabel(SeatLabel(seats[upholsteryIndex]), "cfg-option-name");
         upholstery.Add(seatName);
 
         foreach (string material in new[] { "MB-Tex", "Leather", "Nappa Leather" })
@@ -591,8 +708,8 @@ public class ConfiguratorUI : MonoBehaviour
         {
             if (!filter(options[i])) continue;
             int index = i;
-            grid.Add(Swatch(options[i].Color, options[i].Name, i == paintIndex, () => SelectPaint(index), nameLabel,
-                () => Variant.Paints[paintIndex].Name));
+            grid.Add(Swatch(options[i].Color, PaintLabel(options[i]), i == paintIndex, () => SelectPaint(index), nameLabel,
+                () => PaintLabel(Variant.Paints[paintIndex])));
         }
         return grid;
     }
@@ -605,11 +722,16 @@ public class ConfiguratorUI : MonoBehaviour
         {
             if (!filter(options[i])) continue;
             int index = i;
-            grid.Add(Swatch(options[i].Color, options[i].DisplayName, i == upholsteryIndex, () => SelectUpholstery(index), nameLabel,
-                () => Variant.Upholstery[upholsteryIndex].DisplayName));
+            grid.Add(Swatch(options[i].Color, SeatLabel(options[i]), i == upholsteryIndex, () => SelectUpholstery(index), nameLabel,
+                () => SeatLabel(Variant.Upholstery[upholsteryIndex])));
         }
         return grid;
     }
+
+    private string PaintLabel(GleCatalog.PaintOption paint) => $"{paint.Name}  ·  {PriceTag(GleCatalog.PaintPriceUsd(paint))}";
+
+    private string SeatLabel(GleCatalog.UpholsteryOption seat) =>
+        $"{seat.DisplayName}  ·  {PriceTag(GleCatalog.UpholsteryPriceUsd(Variant, seat))}";
 
     private static VisualElement Swatch(Color color, string name, bool selected, Action onClick, Label nameLabel, Func<string> currentName)
     {
